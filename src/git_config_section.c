@@ -8,6 +8,10 @@ Section *section_create_from_name(char *name) {
   if (!name)
     return NULL; /* Needs to be a valid pointer */
 
+  if (strlen(name) == 0) {
+    return NULL; /* Name cannot be empty */
+  }
+
   Section *section = malloc(sizeof(Section));
   if (!section)
     return NULL;

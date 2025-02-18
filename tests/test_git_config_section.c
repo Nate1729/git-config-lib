@@ -22,6 +22,5 @@ Test(section_create_from_name, empty_name) {
   section = section_create_from_name(name);
 
   // Assert
-  cr_assert(section != NULL);
-  cr_assert(strcmp(section->name, "") == 0);
+  cr_assert(section == NULL);
 }
