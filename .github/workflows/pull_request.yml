@@ -1,0 +1,46 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+
+jobs:
+  checkout-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+  verify-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+  
+      - name: Build library
+        shell: bash
+        run: make library
+  
+  run-tests:
+    needs: [checkout-code]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup for act
+        if: ${{ env.ACT }}
+        shell: bash
+        run: apt update && apt upgrade -y
+
+      - name: Fetch Criterion library
+        shell: bash
+        run: apt install libcriterion-dev -y
+      
+      - name: Build tests
+        shell: bash
+        run: make test
+
+      - name: Run tests
+        shell: bash
+        run: ./run_tests
+    
