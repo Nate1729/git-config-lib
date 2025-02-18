@@ -5,6 +5,9 @@
 #include "git_config_section.h"
 
 Section *section_create_from_name(char *name) {
+  if (!name)
+    return NULL; /* Needs to be a valid pointer */
+
   Section *section = malloc(sizeof(Section));
   if (!section)
     return NULL;
