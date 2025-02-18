@@ -4,12 +4,6 @@ on:
   pull_request:
 
 jobs:
-  checkout-code:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
   verify-build:
     runs-on: ubuntu-latest
     steps:
@@ -21,7 +15,6 @@ jobs:
         run: make library
   
   run-tests:
-    needs: [checkout-code]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
