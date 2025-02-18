@@ -34,7 +34,7 @@ jobs:
 
       - name: Fetch Criterion library
         shell: bash
-        run: apt install libcriterion-dev -y
+        run: sudo apt install libcriterion-dev -y
       
       - name: Build tests
         shell: bash
