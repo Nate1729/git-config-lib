@@ -149,3 +149,22 @@ GitConfig *git_config_read_from_file(const char *filename) {
 
   return config;
 }
+
+int git_config_write_to_file(GitConfig *config, FILE *f) {
+  if (!f || !config) {
+    return 1;
+  }
+
+  unsigned i_sections, i;
+  Section *current_section;
+  for (i_sections=0; i_sections<config->length; i_sections++) {
+    current_section = config->sections[i_sections]; 
+
+    /* Writing a section to a file */
+    fprintf(f, "[%s]\n", current_section->name);
+    for (i=0; i<current_section->length; i++) {
+      fprintf(f, "\t%s = %s\n", current_section->variables[i], current_section->values[i]);
+    }
+  }
+  return 0;
+}
