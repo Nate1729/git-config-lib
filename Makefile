@@ -5,7 +5,7 @@ C_FLAGS=-Wall --std=c99
 	$(CC) $(C_FLAGS) $^ -c
 
 library: git_config.o git_config_section.o
-	ar rcs git_config_lib.a $^
+	ar rcs libgit_config.a $^
 
 clean:
 	rm *.o *.a run_tests
