@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "git_config.h"
+#include "git_config_section.h"
 
 /* -- Internal Functions -- */
 void _trim_edge_whitespace_inplace(char *buffer, unsigned len) {
@@ -69,7 +70,7 @@ int git_config_append_section_move(GitConfig *config, Section *section) {
   return 0;
 }
 
-GitConfig *git_config_read_from_file(const char *filename) {
+GitConfig *git_config_create_from_file(const char *filename) {
   FILE *f = fopen(filename, "r");
   if (!f)
     return NULL;

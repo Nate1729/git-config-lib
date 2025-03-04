@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -52,8 +53,10 @@ int section_append_variable_value_pair(Section *section, char *variable,
   /* Base case for no capacity */
   assert(section->capacity > 0);
 
+
   if (section->capacity == section->length) {
     char **new_variables, **new_values;
+    unsigned i;
     new_variables =
         malloc(sizeof(char *) * (section->capacity + DEFAULT_SECTION_CAPACITY));
     if (!new_variables) {
@@ -67,16 +70,39 @@ int section_append_variable_value_pair(Section *section, char *variable,
       return 1;
     }
 
-    memcpy(new_variables, section->variables, section->capacity);
-    memcpy(new_values, section->values, section->capacity);
+    for (i=0; i< section->capacity; i++) {
+      new_variables[i] = section->variables[i];
+      new_values[i] = section->values[i];
+    }
+    free(section->variables);
+    free(section->values);
+    section->variables = new_variables;
+    section->values = new_values;
     section->capacity += DEFAULT_SECTION_CAPACITY;
   }
 
   assert(section->capacity > section->length); /* Can never be too certain */
 
   /* Now we can finally just append the information */
-  section->variables[section->length] = variable;
-  section->values[section->length] = value;
+  char *new_variable, *new_value;
+  new_variable = malloc(sizeof(char) * strlen(variable));
+  if (!new_variable) {
+    fprintf(stderr, "Memory allocation error.\n");
+    return 1;
+  }
+  new_value = malloc(sizeof(char) * strlen(value));
+  if (!new_value) {
+    free(new_variable);
+    fprintf(stderr, "Memory allocation error.\n");
+    return 1;
+  }
+
+  strcpy(new_variable, variable);
+  strcpy(new_value, value);
+
+
+  section->variables[section->length] = new_variable;
+  section->values[section->length] = new_value;
   section->length += 1;
   return 0;
 }
